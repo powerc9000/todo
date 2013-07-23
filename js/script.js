@@ -81,6 +81,8 @@
 
 	function userNewTask(e){
 		var text = textBox.value;
+		e.preventDefault();
+		if(!text.trim()) return;
 		if(!editing){
 			newTask(text);
 		}
@@ -91,7 +93,7 @@
 			button.innerHTML = "Add New Task";
 		}
 		textBox.value = "";
-		e.preventDefault();
+		
 	}
 	function init(){
 		var tasks = localStorage["tasks"] && JSON.parse(localStorage["tasks"]);
