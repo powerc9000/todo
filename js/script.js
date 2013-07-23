@@ -20,9 +20,12 @@
 		var task = create("<li class='task' data-id='"+id+"'><p>"+text+"</p></li>");
 		var checkbox = create("<input type='checkbox'>");
 		var edit = create("<a href='#'>(edit)</a>")
+		var del = create("<a href='#'>(delete)</a>");
 		task = tasks.appendChild(task);
 		checkbox = task.appendChild(checkbox);
 		edit = task.appendChild(edit);
+		del = task.appendChild(del);
+		del.addEventListener("click", deleteTask);
 		edit.addEventListener("click", editTask);
 		checkbox.addEventListener("click", toggleComplete);
 		if(!init){
@@ -44,6 +47,23 @@
 		textBox.value = this.parentNode.firstChild.textContent;
 		editedElement = this.parentNode;
 		button.innerHTML = "Edit";
+		e.preventDefault();
+	}
+
+	function deleteTask(e){
+		var task = this.parentNode;
+		var id = task.getAttribute("data-id");
+		var c = confirm("Are you sure?");
+		if(c){
+			taskJson.some(function(t, idx){
+				if(t.id === id){
+					taskJson.splice(idx,1);
+					return true;
+				}
+			});
+			localStorage["tasks"] = JSON.stringify(taskJson);
+			task.parentNode.removeChild(task);
+		}
 		e.preventDefault();
 	}
 
