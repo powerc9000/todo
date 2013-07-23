@@ -2,10 +2,12 @@
 	var tasks = document.querySelectorAll(".tasks")[0];
 	var textBox = document.getElementById("newTaskText");
 	var button = document.getElementById("newTask");
+	var taskForm = document.getElementById("actionPaction");
 	var taskJson = [];
 	var editing = false;
 	var editedElement;
 	button.addEventListener("click", userNewTask);
+	taskForm.addEventListener("submit", userNewTask);
 	function create(element){
 		var holder = document.createElement("div"),
 			frag = document.createDocumentFragment();
@@ -77,7 +79,7 @@
 		editJson(this.parentNode.getAttribute("data-id"), "", this.checked);
 	}
 
-	function userNewTask(){
+	function userNewTask(e){
 		var text = textBox.value;
 		if(!editing){
 			newTask(text);
@@ -89,6 +91,7 @@
 			button.innerHTML = "Add New Task";
 		}
 		textBox.value = "";
+		e.preventDefault();
 	}
 	function init(){
 		var tasks = localStorage["tasks"] && JSON.parse(localStorage["tasks"]);
@@ -114,7 +117,6 @@
 				}
 			}
 		});
-		console.log(taskJson);
 		localStorage["tasks"] = JSON.stringify(taskJson);
 	}
 
